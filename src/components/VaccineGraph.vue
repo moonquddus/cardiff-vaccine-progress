@@ -1,8 +1,8 @@
 <template>
   <h2 class="title is-2">Progress</h2>
   <div class="buttons has-addons">
-    <button class="button" v-on:click="setDataType('value')">Raw values</button>
-    <button class="button" v-on:click="setDataType('percentage')">% of population</button>
+    <button class="button" v-bind:class="{'is-active': dataType === 'value'}" v-on:click="setDataType('value')">Raw values</button>
+    <button class="button" v-bind:class="{'is-active': dataType === 'percentage'}" v-on:click="setDataType('percentage')">% of population</button>
   </div>
   <div id="chart"></div>
 </template>
@@ -28,7 +28,7 @@ export default defineComponent({
   data: function() {
     return {
       chart: {} as ChartAPI,
-      dataType: 'value',
+      dataType: 'percentage',
       population: 133587 + 366903 // cardiff + vale
     }
   },
@@ -55,9 +55,7 @@ export default defineComponent({
       return Math.round((value / this.population) * 1000) / 10
     },
     updateChart: function(): void {
-      this.chart.unload({
-        ids: ['x', 'First Vaccine', 'Second Vaccine']
-      })
+
       this.chart.load({
         columns: [
           ['x', ...this.dates],
@@ -65,7 +63,6 @@ export default defineComponent({
           ['Second Vaccine', ...this.secondVaccines]
         ]
       })
-      this.chart.resize()
     },
     setDataType: function(value: string): void {
       this.dataType = value
