@@ -29,8 +29,11 @@ c3.generate({
     x: {
         type: 'timeseries',
         tick: {
-            format: '%d-%m-%Y'
+            format: '%e %b %y'
         }
+    },
+    y: {
+      padding: {bottom: 0}
     }
-}
+  }
 });
