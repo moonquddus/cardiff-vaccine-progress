@@ -12,6 +12,9 @@
         Made by <a target="_blank" href="https://linktr.ee/moon.quddus">Moon Quddus</a>. The <a target="_blank" href="https://github.com/moonquddus/cardiff-vaccine-progress">source code</a> is licensed
         <a target="_blank" rel="nofollow" href="https://www.gnu.org/licenses/gpl-3.0.en.html">GNU General Public License (GPL), version 3</a>.
       </p>
+      <p>
+        Vaccination data provided by <a target="_blank" rel="nofollow" href="https://public.tableau.com/profile/public.health.wales.health.protection#!/vizhome/RapidCOVID-19virology-Public/Headlinesummary">Public Health Wales Health Protection, via Tableau</a>. Population estimate provided by <a target="_blank" rel="nofollow" href="https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationestimatesforukenglandandwalesscotlandandnorthernireland">ONS</a>.
+      </p>
     </div>
   </footer>
 </template>
