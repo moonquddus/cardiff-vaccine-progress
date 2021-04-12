@@ -56,7 +56,7 @@ export default defineComponent({
   },
   computed: {
     sortedData: function(): Array<ChartDataPoint>{
-      return this.chartData.reverse()
+      return [...this.chartData].reverse()
     }
   },
   methods: {
