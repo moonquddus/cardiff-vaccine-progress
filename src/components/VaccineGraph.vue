@@ -1,10 +1,12 @@
 <template>
   <h2 class="title is-2">Progress</h2>
+  <div id="overall-chart"></div>
+  <hr />
   <div class="buttons has-addons">
     <button class="button" v-bind:class="{'is-active': dataType === 'value'}" v-on:click="setDataType('value')">Raw values</button>
     <button class="button" v-bind:class="{'is-active': dataType === 'percentage'}" v-on:click="setDataType('percentage')">% of population</button>
   </div>
-  <div id="chart"></div>
+  <div id="chart1"></div>
 </template>
 
 <script lang="ts">
@@ -28,7 +30,8 @@ export default defineComponent({
   data: function() {
     return {
       chart: {} as ChartAPI,
-      dataType: 'percentage',
+      overallChart: {} as ChartAPI,
+      dataType: 'value',
       population: 133587 + 366903 // cardiff + vale
     }
   },
@@ -41,11 +44,23 @@ export default defineComponent({
     },
     secondVaccines: function (): Array<number> {
       return this.chartData.map((datapoint: ChartDataPoint) => this.getChartPoint(datapoint.value[1]))
+    },
+    partialVaccines: function (): Array<number> {
+      return this.chartData.map((datapoint: ChartDataPoint) => this.getChartPoint(datapoint.value[0]) - this.getChartPoint(datapoint.value[1]))
+    },
+    newFirstDoses: function (): Array<number> {
+      return this.chartData.map((datapoint: ChartDataPoint, index: number) => this.chartData[index - 1] ? this.getNumber(datapoint.value[0]) - this.getNumber(this.chartData[index - 1].value[0]) : this.getNumber(datapoint.value[0]))
+    },
+    newSecondDoses: function (): Array<number> {
+      return this.chartData.map((datapoint: ChartDataPoint, index: number) => this.chartData[index - 1] ? this.getNumber(datapoint.value[1]) - this.getNumber(this.chartData[index - 1].value[1]) : this.getNumber(datapoint.value[1]))
     }
   },
   methods: {
+    getNumber: function(value: string): number {
+      return ~~value.replace(',','')
+    },
     getChartPoint: function(value: string): number {
-      const numberValue = ~~value.replace(',','')
+      const numberValue = this.getNumber(value)
       if (this.dataType === 'percentage'){
         return this.calculatePercentage(numberValue)
       }
@@ -71,6 +86,7 @@ export default defineComponent({
   },
   mounted: function() {
     this.chart = c3.generate({
+      bindto: '#chart1',
       data: {
         x: 'x',
         columns: [
@@ -81,15 +97,60 @@ export default defineComponent({
       },
       axis: {
         x: {
-            type: 'timeseries',
-            tick: {
-                format: '%e %b %y'
-            }
+          type: 'timeseries',
+          tick: {
+              format: '%e %b %y'
+          }
         },
         y: {
           padding: {bottom: 0}
-        }
+        },
       }
+    })
+
+    this.overallChart = c3.generate({
+      bindto: '#overall-chart',
+      data: {
+        x: 'x',
+        columns: [
+          ['x', ...this.dates],
+          ['Partially vaccinated', ...this.partialVaccines],
+          ['Fully vaccinated', ...this.secondVaccines],
+          ['New 1st dose', ...this.newFirstDoses],
+          ['New 2nd dose', ...this.newSecondDoses]
+        ],
+        type: 'bar',
+        types: {
+          'New 1st dose': 'line',
+          'New 2nd dose': 'line'
+        },
+        groups: [
+            ['Fully vaccinated', 'Partially vaccinated']
+        ],
+        order: null,
+        axes: {
+          'New 1st dose': 'y2',
+          'New 2nd dose': 'y2'
+        },
+      },
+      axis: {
+        x: {
+          type: 'timeseries',
+          tick: {
+              format: '%e %b %y'
+          }
+        },
+        y: {
+          padding: {bottom: 0}
+        },
+        y2: {
+          show: true,
+          padding: {bottom: 0}
+        }
+      },
+      bar: {
+          space: -0.3
+      },
     })
   }
 })
