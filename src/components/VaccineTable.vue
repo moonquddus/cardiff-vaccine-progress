@@ -1,36 +1,41 @@
 <template>
     <h2 class="title is-2">Data</h2>
-    <div class="table-container">
-      <table class="table is-striped is-hoverable">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th class="has-text-centered">1st vaccinations (%)</th>
-              <th class="has-text-centered">New 1st doses</th>
-              <th class="has-text-centered">2nd vaccinations (%)</th>
-              <th class="has-text-centered">New 2nd doses</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(dataPoint, index) in sortedData" :key="index">
-              <td><strong>{{ new Date(dataPoint.label).toLocaleDateString('en-GB', {dateStyle: 'long'}) }}</strong></td>
-              <td class="has-text-centered">{{ dataPoint.value[0] }} <em class="is-size-7">({{ calculatePercentage(dataPoint.value[0]) }}%)</em></td>
-              <td class="has-text-centered">{{ getValueDifference(index, 0) }}</td>
-              <td class="has-text-centered">{{ dataPoint.value[1] }} <em class="is-size-7">({{ calculatePercentage(dataPoint.value[1]) }}%)</em></td>
-              <td class="has-text-centered">{{ getValueDifference(index, 1) }}</td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr>
-              <th>Date</th>
-              <th class="has-text-centered">1st Vaccinations</th>
-              <th class="has-text-centered">%</th>
-              <th class="has-text-centered">2nd Vaccinations</th>
-              <th class="has-text-centered">%</th>
-            </tr>
-          </tfoot>
-      </table>
+    <div class="columns is-centered">
+      <div class="column is-narrow">
+        <div class="table-container">
+          <table class="table is-striped is-hoverable is-fullwidth">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th class="has-text-centered">1st doses (new)</th>
+                  <th class="has-text-centered">per 100</th>
+                  <th class="has-text-centered">2nd doses (new)</th>
+                  <th class="has-text-centered">per 100</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(dataPoint, index) in sortedData" :key="index">
+                  <td><strong>{{ new Date(dataPoint.label).toLocaleDateString('en-GB', {dateStyle: 'short'}) }}</strong></td>
+                  <td class="has-text-centered">{{ dataPoint.value[0] }} <em class="is-size-7"> ({{ getValueDifference(index, 0) }})</em></td>
+                  <td class="has-text-centered">{{ calculatePercentage(dataPoint.value[0]) }}</td>
+                  <td class="has-text-centered">{{ dataPoint.value[1] }} <em class="is-size-7"> ({{ getValueDifference(index, 1) }})</em></td>
+                  <td class="has-text-centered">{{ calculatePercentage(dataPoint.value[1]) }}</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th>Date</th>
+                  <th class="has-text-centered">1st doses (new)</th>
+                  <th class="has-text-centered">per 100</th>
+                  <th class="has-text-centered">2nd doses (new)</th>
+                  <th class="has-text-centered">per 100</th>
+                </tr>
+              </tfoot>
+          </table>
+        </div>
+      </div>
     </div>
+
 </template>
 
 <script lang="ts">

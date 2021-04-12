@@ -4,7 +4,7 @@
   <hr />
   <div class="buttons has-addons">
     <button class="button" v-bind:class="{'is-active': dataType === 'value'}" v-on:click="setDataType('value')">Raw values</button>
-    <button class="button" v-bind:class="{'is-active': dataType === 'percentage'}" v-on:click="setDataType('percentage')">% of population</button>
+    <button class="button" v-bind:class="{'is-active': dataType === 'percentage'}" v-on:click="setDataType('percentage')">Per 100</button>
   </div>
   <div id="chart1"></div>
 </template>
@@ -74,8 +74,8 @@ export default defineComponent({
       this.chart.load({
         columns: [
           ['x', ...this.dates],
-          ['First Vaccine', ...this.firstVaccines],
-          ['Second Vaccine', ...this.secondVaccines]
+          ['1st doses', ...this.firstVaccines],
+          ['2nd doses', ...this.secondVaccines]
         ]
       })
     },
@@ -91,8 +91,8 @@ export default defineComponent({
         x: 'x',
         columns: [
           ['x', ...this.dates],
-          ['First Vaccine', ...this.firstVaccines],
-          ['Second Vaccine', ...this.secondVaccines]
+          ['1st doses', ...this.firstVaccines],
+          ['2nd doses', ...this.secondVaccines]
         ]
       },
       axis: {
@@ -119,6 +119,12 @@ export default defineComponent({
           ['New 1st dose', ...this.newFirstDoses],
           ['New 2nd dose', ...this.newSecondDoses]
         ],
+        colors: {
+            'Partially vaccinated': 'rgba(52,152,219,0.5)',
+            'Fully vaccinated': 'rgba(232,62,140,0.5)',
+            'New 1st dose': 'rgba(102,16,242,1)',
+            'New 2nd dose': 'rgba(55,90,127,1)'
+        },
         type: 'bar',
         types: {
           'New 1st dose': 'line',
@@ -156,5 +162,11 @@ export default defineComponent({
 })
 </script>
 
-<style scoped>
+<style>
+  .c3-line {
+    stroke-width: 2px;
+  }
+  .c3-circle {
+    stroke-width: 0;
+  }
 </style>
