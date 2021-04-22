@@ -4,7 +4,5 @@ import vue from '@vitejs/plugin-vue'
 // https://vitejs.dev/config/
 export default defineConfig({
   base: '/cardiff-vaccine-progress/',
-  plugins: [
-    vue()
-  ]
+  plugins: [vue()]
 })
